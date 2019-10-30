@@ -1,0 +1,12 @@
+version: '3'
+services:
+  viewer:
+    build:
+      context: ./
+    container_name: 'dash-sample'
+    tty: true
+    ports:
+      - 8050:8050
+    volumes:
+      - ./server:/server/
+
