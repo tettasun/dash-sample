@@ -5,6 +5,7 @@ import dash_html_components as html
 import pandas as pd
 import os
 from dash.dependencies import Input, Output
+import dash_table
 
 external_stylesheets = ['https://codepen.io/chriddyp/pen/bWLwgP.css']
 
@@ -12,23 +13,6 @@ app = dash.Dash(__name__, external_stylesheets=external_stylesheets)
 
 df = pd.read_csv('./server/src/assets/13TOKYO.csv')
 
-print('df', df)
-# print('dataframeの行数・列数の確認==>\n', df.shape)
-# print('indexの確認==>\n', df.index)
-# print('columnの確認==>\n', df.columns)
-# print('dataframeの各列のデータ型を確認==>\n', df.dtypes)
-#print('drop', df.drop(df.index[[1, 3, 5]]))
-#print('col', df.drop(df.columns[[1,2,3]]))
-def generate_table(dataframe, max_rows=10):
-    return html.Table(
-        # Header
-        [html.Tr([html.Th(col) for col in dataframe.columns])] +
-
-        # Body
-        [html.Tr([
-            html.Td(dataframe.iloc[i][col]) for col in dataframe.columns
-        ]) for i in range(min(len(dataframe), max_rows))]
-    )
 
 app.layout = html.Div(children=[
     html.H1(children='Dash Sample'),
@@ -42,6 +26,7 @@ app.layout = html.Div(children=[
 
     html.Label('Dropdown'),
     dcc.Dropdown(
+        id='region-dropdown',
         options=[
             {'label': u'千代田区', 'value': 'CHIYODA'},
             {'label': '新宿区', 'value': 'SHINJUKU'},
@@ -50,8 +35,11 @@ app.layout = html.Div(children=[
     ),
 
     html.H4(children='test result'),
-    #generate_table(df.sort_values(by='旧郵便番号', axis=0), 200),
-    generate_table(df.query('市区町村名 == "新宿区"'), 200),
+    dash_table.DataTable(
+        id='table',
+        columns=[ {"name": i, "id": i} for i in df.columns],
+        data=df.to_dict("rows")
+    ),
 
     dcc.Graph(
         id='example-graph',
@@ -67,6 +55,15 @@ app.layout = html.Div(children=[
     ),
 
 ])
+
+# callbacks
+# @app.callback(
+#     Output('output-container', 'children'),
+#     [Input('region-dropdown', 'value')])
+# def input_triggers_spinner(value):
+#     time.sleep(2)
+#     return html.Img(src=value, height="30%", width="30%", style={"margin": "10%"})
+
 
 
 
