@@ -1,0 +1,15 @@
+# dataframe
+https://pandas.pydata.org/pandas-docs/version/0.25/api.html#dataframe
+
+# read
+df = pd.read_csv("filename", header=None)
+df = pd.read_clipboard(header=None)
+
+df.columns
+df.head(行数)
+df.describe()
+
+https://github.com/ysdyt/pandas_tutorial/blob/master/pandas_tutorial.ipynb
+
+# filter
+df.query('xxx == "yyy"')
