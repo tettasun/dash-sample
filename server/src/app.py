@@ -15,12 +15,18 @@ df = pd.read_csv('./server/src/assets/13TOKYO.csv')
 
 
 app.layout = html.Div(children=[
-    html.H1(children='Dash Sample'),
+    html.H1(children='''
+        dash sample site
+    '''),
 
     html.A('repos', href='https://github.com/tettasun/dash-sample', target="_blank"),
-    html.Div(children='''
-        dash testing site
-    '''),
+    html.H4(children='Markdown'),
+    dcc.Markdown('''
+        #### Dash Sample
+        write html with markdown >w<
+
+        [links](https://dash.plot.ly/)
+        '''),
     html.H4(children='Image'),
     html.Img(src=app.get_asset_url('tokyo.png')),
 
@@ -34,13 +40,14 @@ app.layout = html.Div(children=[
         value='千代田区'
     ),
 
-    html.H4(children='test result'),
+    html.H4(children='Table with Pandas'),
     dash_table.DataTable(
         id='table',
         columns=[ {"name": i, "id": i} for i in df.columns],
         data=df.to_dict("records")
     ),
 
+    html.H4(children='Graphs'),
     dcc.Graph(
         id='example-graph',
         figure={
