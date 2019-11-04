@@ -33,8 +33,9 @@ def generate_table(dataframe, max_rows=10):
 app.layout = html.Div(children=[
     html.H1(children='Dash Sample'),
 
+    html.A('repos', href='https://github.com/tettasun/dash-sample', target="_blank"),
     html.Div(children='''
-        Hoge
+        dash testing site
     '''),
     html.H4(children='Image'),
     html.Img(src=app.get_asset_url('tokyo.png')),
