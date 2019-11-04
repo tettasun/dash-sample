@@ -28,17 +28,17 @@ app.layout = html.Div(children=[
     dcc.Dropdown(
         id='region-dropdown',
         options=[
-            {'label': u'千代田区', 'value': 'CHIYODA'},
-            {'label': '新宿区', 'value': 'SHINJUKU'},
+            {'label': u'千代田区', 'value': '千代田区'},
+            {'label': '新宿区', 'value': '新宿区'},
         ],
-        value='CHIYODA'
+        value='千代田区'
     ),
 
     html.H4(children='test result'),
     dash_table.DataTable(
         id='table',
         columns=[ {"name": i, "id": i} for i in df.columns],
-        data=df.to_dict("rows")
+        data=df.to_dict("records")
     ),
 
     dcc.Graph(
@@ -56,14 +56,12 @@ app.layout = html.Div(children=[
 
 ])
 
-# callbacks
-# @app.callback(
-#     Output('output-container', 'children'),
-#     [Input('region-dropdown', 'value')])
-# def input_triggers_spinner(value):
-#     time.sleep(2)
-#     return html.Img(src=value, height="30%", width="30%", style={"margin": "10%"})
-
+#callbacks
+@app.callback(
+    Output('table', 'data'),
+    [Input('region-dropdown', 'value')])
+def update_table(value):
+    return df.query('市区町村名 == @value').to_dict('records')
 
 
 
